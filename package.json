@@ -1,0 +1,24 @@
+{
+  "name": "hardhat-project",
+  "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.1.1",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@openzeppelin/contracts": "^4.7.3",
+    "chai": "^4.3.6",
+    "ethereum-waffle": "^3.4.4",
+    "ethers": "^5.7.1",
+    "hardhat": "^2.11.2"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^1.0.3"
+  },
+  "version": "1.0.0",
+  "main": "hardhat.config.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
