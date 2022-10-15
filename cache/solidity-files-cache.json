@@ -295,10 +295,10 @@
         "WrappedBitcoin"
       ]
     },
-    "/Users/16036diego/Desktop/Desktop/Software-Development/erc20StakingApp/contracts/USDCoin.sol": {
-      "lastModificationDate": 1665662345745,
-      "contentHash": "848ab64df71a5d30d72b0ebf29c3e3d3",
-      "sourceName": "contracts/USDCoin.sol",
+    "/Users/16036diego/Desktop/Desktop/Software-Development/erc20StakingApp/contracts/UsdCoin.sol": {
+      "lastModificationDate": 1665662593640,
+      "contentHash": "daaf48379dde78fad8345925ad767bfc",
+      "sourceName": "contracts/UsdCoin.sol",
       "solcConfig": {
         "version": "0.8.0",
         "settings": {
@@ -367,43 +367,6 @@
       ],
       "artifacts": [
         "Tether"
-      ]
-    },
-    "/Users/16036diego/Desktop/Desktop/Software-Development/erc20StakingApp/contracts/UsdCoin.sol": {
-      "lastModificationDate": 1665662593640,
-      "contentHash": "daaf48379dde78fad8345925ad767bfc",
-      "sourceName": "contracts/UsdCoin.sol",
-      "solcConfig": {
-        "version": "0.8.0",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "UsdCoin"
       ]
     }
   }
