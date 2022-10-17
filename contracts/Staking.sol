@@ -70,6 +70,7 @@ contract Staking {
             usdPrice / ethUsdPrice,
             apy
         );
+        
         currentTokenId += 1;
     }
 
