@@ -14,8 +14,6 @@ contract Staking {
         string name;
         string symbol;
         address tokenAddress;
-        uint usdPrice;
-        uint ethPrice; //Paying out intrerest in ether for this application
         uint apy; //hardcoding the APY
     }
 
@@ -28,8 +26,6 @@ contract Staking {
         uint createdDate;
         uint apy;
         uint tokenQuantity;
-        uint usdValue;
-        uint ethValue;
         bool open;
     }
 
@@ -57,7 +53,6 @@ contract Staking {
         string calldata name,
         string calldata symbol,
         address tokenAddress,
-        uint usdPrice,
         uint apy
     ) external onlyOwner {
         tokenSymbols.push(symbol);
@@ -66,8 +61,6 @@ contract Staking {
             name,
             symbol,
             tokenAddress,
-            usdPrice,
-            usdPrice / ethUsdPrice,
             apy
         );
         
@@ -111,8 +104,6 @@ contract Staking {
             block.timestamp,
             tokens[symbol].apy,
             tokenQuantity,
-            tokens[symbol].usdPrice * tokenQuantity,
-            (tokens[symbol].usdPrice * tokenQuantity) / ethUsdPrice,
             true
         );
         positionIdsByAddress[msg.sender].push(currentPositionId);
@@ -134,10 +125,9 @@ contract Staking {
 
     function calculateInterest(
         uint apy,
-        uint value,
         uint numberDays
     ) public pure returns (uint) {
-        return (apy * value * numberDays) / 1000 / 365;
+        return (apy *  numberDays) / 1000 / 365;
     }
 
     function closePosition(uint positionId) external {
@@ -160,7 +150,6 @@ contract Staking {
 
         uint weiAmount = calculateInterest(
             positions[positionId].apy,
-            positions[positionId].ethValue,
             numberDays
         );
 

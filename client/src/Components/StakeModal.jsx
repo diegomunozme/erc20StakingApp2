@@ -1,27 +1,22 @@
-import React, { useState } from 'react';
+import React from "react";
 
-const StakeModal = props => {
-  const {
-    onClose,
-    stakeTokenSymbol,
-    setStakeTokenQuantity,
-    stakeTokens,
-  } = props
+const StakeModal = (props) => {
+  const { onClose, stakeTokenSymbol, setStakeTokenQuantity, stakeTokens } =
+    props;
 
   return (
     <>
       <div className="modal-class" onClick={onClose}>
-        <div className="modal-content" onClick={e => e.stopPropagation()}>
+        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           <div className="modal-body">
             <h2 className="titleHeader">Stake</h2>
 
             <div className="row">
               <div className="col-md-9 fieldContainer">
-
                 <input
                   className="inputField"
                   placeholder="0.0"
-                  onChange={e => props.setStakeTokenQuantity(e.target.value)}
+                  onChange={(e) => props.setStakeTokenQuantity(e.target.value)}
                 />
               </div>
 
@@ -32,16 +27,20 @@ const StakeModal = props => {
 
             <div className="row">
               <div
-                onClick={() => {stakeTokens(); onClose()}}
-                className="pinkButton hoverButton">
-                  Stake
+                onClick={() => {
+                  stakeTokens();
+                  onClose();
+                }}
+                className="pinkButton hoverButton"
+              >
+                Stake
               </div>
             </div>
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default StakeModal;

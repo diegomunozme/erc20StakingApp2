@@ -1,24 +1,16 @@
 import { useEffect, useState } from "react";
 
-import { ethers } from "ethers";
+import { ethers } from "ether";
 
 import artifact from "./artifacts/contracts/Staking.sol/Staking.json";
-import linkArtifact from "./artifacts/contracts/Chainlink.sol/Chainlink.json";
 import usdtArtifact from "./artifacts/contracts/Tether.sol/Tether.json";
-import usdcArtifact from "./artifacts/contracts/UsdCoin.sol/UsdCoin.json";
-import wbtcArtifact from "./artifacts/contracts/WrappedBTC.sol/WrappedBitcoin.json";
-import wethArtifact from "./artifacts/contracts/WrappedEth.sol/WrappedEther.json";
-
 import "./App.css";
 
-import StakeModal from "./Components/StakeModal.jsx";
+import StakeModal from "./Components/StakeModal";
 
-const CONTRACT_ADDRESS = "0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1";
-const LINK_ADDRESS = "0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44";
-const USDT_ADDRESS = "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f";
-const USDC_ADDRESS = "0x4A679253410272dd5232B3Ff7cF5dbB88f295319";
-const WBTC_ADDRESS = "0x7a2088a1bFc9d81c55368AE168C2C02570cB814F";
-const WETH_ADDRESS = "0x09635F643e140090A9A8Dcd712eD6285858ceBef";
+const CONTRACT_ADDRESS = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
+
+const USDT_ADDRESS = "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512";
 
 function App() {
   const [provider, setProvider] = useState(undefined);
@@ -59,36 +51,13 @@ function App() {
       );
       setContract(contract);
 
-      const linkContract = await new ethers.Contract(
-        LINK_ADDRESS,
-        linkArtifact.abi,
-        provider
-      );
       const usdtContract = await new ethers.Contract(
         USDT_ADDRESS,
         usdtArtifact.abi,
         provider
       );
-      const usdcContract = await new ethers.Contract(
-        USDC_ADDRESS,
-        usdcArtifact.abi,
-        provider
-      );
-      const wbtcContract = await new ethers.Contract(
-        WBTC_ADDRESS,
-        wbtcArtifact.abi,
-        provider
-      );
-      const wethContract = await new ethers.Contract(
-        WETH_ADDRESS,
-        wethArtifact.abi,
-        provider
-      );
-      setTokenContracts((prev) => ({ ...prev, ["LINK"]: linkContract }));
+
       setTokenContracts((prev) => ({ ...prev, ["USDT"]: usdtContract }));
-      setTokenContracts((prev) => ({ ...prev, ["USDC"]: usdcContract }));
-      setTokenContracts((prev) => ({ ...prev, ["WBTC"]: wbtcContract }));
-      setTokenContracts((prev) => ({ ...prev, ["WETH"]: wethContract }));
 
       const tokenSymbols = await contract.getTokenSymbols();
       setTokenSymbols(tokenSymbols);
@@ -134,16 +103,10 @@ function App() {
 
       const ethAccruedInterestWei = await calcAccruedInterest(
         asset.apy,
-        asset.ethValue,
         asset.createdDate
       );
 
       const ethAccruedInterest = toEther(ethAccruedInterestWei);
-
-      const usdAccruedInterest = (
-        (ethAccruedInterest * tokens["WETH"].usdPrice) /
-        100
-      ).toFixed(2);
 
       const parsedAsset = {
         positionId: Number(asset.positionId),
@@ -152,9 +115,6 @@ function App() {
         createdDate: asset.createdDate,
         apy: asset.apy / 100,
         tokensStaked: tokensStaked,
-        usdValue: toEther(asset.usdValue) / 100,
-        usdAccruedInterest: usdAccruedInterest,
-        ethAccruedInterest: ethAccruedInterest,
         open: asset.open,
       };
 
@@ -197,7 +157,6 @@ function App() {
 
     return (
       <div className="row">
-        <div className="col-md-2">{displayLogo(token?.symbol)}</div>
         <div className="col-md-2">{token?.symbol}</div>
         <div className="col-md-2">
           {(Number(token?.usdPrice) / 100).toFixed(0)}
@@ -218,40 +177,6 @@ function App() {
     );
   };
 
-  const displayLogo = (symbol) => {
-    if (symbol === "LINK") {
-      return (
-        <>
-          <img className="logoImg" src="link.webp" />
-        </>
-      );
-    } else if (symbol === "USDT") {
-      return (
-        <>
-          <img className="logoImg" src="usdt.webp" />
-        </>
-      );
-    } else if (symbol === "USDC") {
-      return (
-        <>
-          <img className="logoImg" src="usdc.webp" />
-        </>
-      );
-    } else if (symbol === "WBTC") {
-      return (
-        <>
-          <img className="logoImg" src="wbtc.webp" />
-        </>
-      );
-    } else if (symbol === "WETH") {
-      return (
-        <>
-          <img className="logoImg" src="weth.webp" />
-        </>
-      );
-    }
-  };
-
   return (
     <div className="App">
       <div className="marketContainer">
@@ -259,17 +184,15 @@ function App() {
           <span>
             <img className="logoImg" src="eth-logo.webp" />
           </span>
-          <span className="marketHeader">Ethereum Market</span>
+          <span className="marketHeader">Hashback Staking</span>
         </div>
 
         <div>
           <div className="row columnHeaders">
             <div className="col-md-2">Asset</div>
             <div className="col-md-2">Symbol</div>
-            <div className="col-md-2">Price (USD)</div>
             <div className="col-md-2">Total Supplied</div>
             <div className="col-md-2">APY</div>
-            <div className="col-md-2"></div>
           </div>
         </div>
         <div>
@@ -302,7 +225,6 @@ function App() {
               {assets.length > 0 &&
                 assets.map((a, idx) => (
                   <div className="row">
-                    <div className="col-md-1">{displayLogo(a.tokenSymbol)}</div>
                     <div className="col-md-2">{a.tokensStaked}</div>
                     <div className="col-md-2">{a.usdValue}</div>
                     <div className="col-md-2">{a.usdAccruedInterest}</div>
